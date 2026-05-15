@@ -1,0 +1,45 @@
+services:
+  retronas:
+    container_name: retronas
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: retronas-docker:local
+    tty: true
+    stdin_open: true
+    privileged: true
+    network_mode: host
+    volumes:
+      - retronas_data:/data/retronas
+      - retronas_etc:/opt/retronas/etc
+      - retronas_log:/opt/retronas/log
+      - retronas_cache:/opt/retronas/cache
+    restart: unless-stopped
+    command: ["/opt/retronas/retronas.sh", "-g"]
+
+  retronas-dev:
+    container_name: retronas-dev
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: retronas-docker:local
+    tty: true
+    stdin_open: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    volumes:
+      - retronas_data:/data/retronas
+      - retronas_etc:/opt/retronas/etc
+      - retronas_log:/opt/retronas/log
+      - retronas_cache:/opt/retronas/cache
+    restart: unless-stopped
+    command: ["/opt/retronas/retronas.sh", "-g"]
+
+volumes:
+  retronas_data:
+  retronas_etc:
+  retronas_log:
+  retronas_cache:

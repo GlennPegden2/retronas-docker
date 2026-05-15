@@ -1,0 +1,8 @@
+.git
+.gitignore
+.github
+.vscode
+ansible/collections
+ansible/roles/**/.cache
+log
+cache
